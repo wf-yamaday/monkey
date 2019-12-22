@@ -1,23 +1,36 @@
-name: golang_ci
-on: [push]
+name: Golang Lint and Test
+on:
+  push:
+    branches:
+      - master
+  pull_request:
 
 jobs:
-  build:
-    name: all
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
-      # GOPATHなどのセットアップ
-      - name: set up
+      - name: Set up Go
         uses: actions/setup-go@v1
         with:
           go-version: 1.13
-        id: go
-      # repositoryの中身にアクセスするためのチェックアウト
+      - name: Check out code
+        uses: actions/checkout@v1
+      - name: lint
+        run: |
+          export PATH=$PATH:$(go env GOPATH)/bin # temporary fix. See https://github.com/actions/setup-go/issues/14
+          go get -u golang.org/x/lint/golint 
+          make lint
+
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.13
       - name: checkout
         uses: actions/checkout@v1
-      - name: install lint
-        run: curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(go env GOPATH)/bin v1.18.0
-      - name: lint
-        run: golangci-lint run
       - name: test
         run: go test ./... -v

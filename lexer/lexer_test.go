@@ -70,7 +70,7 @@ func TestNextToken(t *testing.T) {
 		}
 
 		if tok.Literal != tt.expextedLiteral {
-			t.Fatalf("test[%d - literal wrong. expected=%q, got=%q", i, tt.expextedLiteral, tok.Type)
+			t.Fatalf("test[%d] - literal wrong. expected=%q, got=%q", i, tt.expextedLiteral, tok.Type)
 		}
 	}
 }

@@ -9,8 +9,10 @@ import (
 	"github.com/wf-yamaday/monkey/token"
 )
 
+// PROMPT REPLで先頭に表示する文字列
 const PROMPT = ">> "
 
+// Start REPLを起動する関数
 func Start(in io.Reader, out io.Writer) {
 	scanner := bufio.NewScanner(in)
 

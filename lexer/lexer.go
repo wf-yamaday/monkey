@@ -2,6 +2,7 @@ package lexer
 
 import "github.com/wf-yamaday/monkey/token"
 
+// Lexer 字句解析のための構造
 type Lexer struct {
 	input        string
 	position     int  //入力における現在の文字
@@ -9,6 +10,7 @@ type Lexer struct {
 	ch           byte //現在検査中の文字
 }
 
+// New 初期化関数
 func New(input string) *Lexer {
 	l := &Lexer{input: input}
 	l.readChar()
@@ -25,6 +27,7 @@ func (l *Lexer) readChar() {
 	l.readPosition++
 }
 
+// NextToken トークンが何
 func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 
@@ -94,7 +97,7 @@ func (l *Lexer) NextToken() token.Token {
 	return tok
 }
 
-func newToken(tokenType token.TokenType, ch byte) token.Token {
+func newToken(tokenType token.Type, ch byte) token.Token {
 	return token.Token{Type: tokenType, Literal: string(ch)}
 }
 
@@ -128,10 +131,12 @@ func (l *Lexer) readNumber() string {
 	return l.input[postion:l.position]
 }
 
+// 与えられた引数が数値かどうかを判定する
 func isDigit(ch byte) bool {
 	return '0' <= ch && ch <= '9'
 }
 
+// 一つ先の入力を覗く
 func (l *Lexer) peekChar() byte {
 	if l.readPosition >= len(l.input) {
 		return 0

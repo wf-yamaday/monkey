@@ -28,7 +28,21 @@ func (l *Lexer) readChar() {
 func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 
+	l.skipWhitespace()
+
 	switch l.ch {
+	default:
+		if isLetter(l.ch) {
+			tok.Literal = l.readIdentifier()
+			tok.Type = token.LookupIdent(tok.Literal)
+			return tok
+		} else if isDigit(l.ch) {
+			tok.Type = token.INT
+			tok.Literal = l.readNumber()
+			return tok
+		} else {
+			tok = newToken(token.ILLEGAL, l.ch)
+		}
 	case '=':
 		tok = newToken(token.ASSIGN, l.ch)
 	case ';':
@@ -37,7 +51,7 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.LPAREN, l.ch)
 	case ')':
 		tok = newToken(token.RPAREN, l.ch)
-	case ',' :
+	case ',':
 		tok = newToken(token.COMMA, l.ch)
 	case '+':
 		tok = newToken(token.PLUS, l.ch)
@@ -55,5 +69,39 @@ func (l *Lexer) NextToken() token.Token {
 }
 
 func newToken(tokenType token.TokenType, ch byte) token.Token {
-	return token.Token{Type: tokenType, Literal: string(ch) }
+	return token.Token{Type: tokenType, Literal: string(ch)}
+}
+
+// 非英字まで字句解析を進める
+func (l *Lexer) readIdentifier() string {
+	position := l.position
+	for isLetter(l.ch) {
+		l.readChar()
+	}
+	return l.input[position:l.position]
+}
+
+// 与えられた引数が英字かどうかを判定する
+func isLetter(ch byte) bool {
+	return 'a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_'
+}
+
+// spaceを読み飛ばす関数
+// eatWhiteSpaceやconsumeWhitespaceなどと呼ばれることもある
+func (l *Lexer) skipWhitespace() {
+	for l.ch == ' ' || l.ch == '\t' || l.ch == '\n' || l.ch == '\r' {
+		l.readChar()
+	}
+}
+
+func (l *Lexer) readNumber() string {
+	postion := l.position
+	for isDigit(l.ch) {
+		l.readChar()
+	}
+	return l.input[postion:l.position]
+}
+
+func isDigit(ch byte) bool {
+	return '0' <= ch && ch <= '9'
 }

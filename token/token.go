@@ -8,43 +8,66 @@ type Token struct {
 }
 
 const (
+	// ILLEGAL 無効な文字
 	ILLEGAL = "ILLEGAL"
+	// EOF 終端文字
 	EOF     = "EOF"
 
-	// 識別子・リテラル
+	// IDENT 識別子・リテラル
 	IDENT = "IDENT"
+	// INT 整数トークン
 	INT   = "INT"
 
-	// 演算子
+	// ASSIGN 束縛演算子
 	ASSIGN   = "="
+	// PLUS 加算演算子
 	PLUS     = "+"
+	// MINUS 減算演算子
 	MINUS    = "-"
+	// BANG 否定演算子
 	BANG     = "!"
+	// ASTERISK 乗算演算子
 	ASTERISK = "*"
+	// SLASH 除算演算子
 	SLASH    = "/"
 
+	// LT 比較演算子 小なり
 	LT = "<"
+	// GT 比較演算子 大なり
 	GT = ">"
 
+	// EQ 等価演算子
 	EQ     = "=="
-	NOT_EQ = "!="
+	// NOTEQ 不等価演算子
+	NOTEQ = "!="
 
-	// デリミタ
+	// COMMA デリミタ
 	COMMA     = ","
+	// SEMICOLON デリミタ
 	SEMICOLON = ";"
 
+	// LPAREN 左括弧
 	LPAREN = "("
+	// RPAREN 右括弧
 	RPAREN = ")"
+	// LBRACE 左中括弧
 	LBRACE = "{"
+	// RBRACE 右中括弧
 	RBRACE = "}"
 
-	// キーワード
+	// FUNCTION 関数キーワード
 	FUNCTION = "FUNCTION"
+	// LET 変数キーワード
 	LET      = "LET"
+	// TRUE 真
 	TRUE     = "TRUE"
+	// FALSE 偽
 	FALSE    = "FALSE"
+	// IF 条件
 	IF       = "IF"
+	// ELSE または
 	ELSE     = "ELSE"
+	// RETURN return
 	RETURN   = "RETURN"
 )
 
